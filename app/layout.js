@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Mosque Fund Management - Donation & Expense Tracking",
-  description: "Professional donation and expense management system for mosques",
+  title: "Masjid Ashraf ul Masjid - Donation & Expense Tracking",
+  description: "Donation and expense management system for Masjid Ashraf ul Masjid",
 };
 
 export default function RootLayout({ children }) {

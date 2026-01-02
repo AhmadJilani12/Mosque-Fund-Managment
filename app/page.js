@@ -84,9 +84,9 @@ export default function LoginPage() {
           }}>
             ☪️
           </div>
-          <h1 style={{fontSize: '32px', fontWeight: 'bold', color: '#065f46', marginBottom: '8px'}}>Masjid Fund</h1>
+          <h1 style={{fontSize: '32px', fontWeight: 'bold', color: '#065f46', marginBottom: '8px'}}>Masjid Ashraf ul Masajid</h1>
           <p style={{color: '#047857', fontSize: '16px', fontWeight: '500'}}>مسجد خيراتي نظام</p>
-          <p style={{color: '#6b7280', fontSize: '13px', marginTop: '4px'}}>Management System</p>
+          <p style={{color: '#6b7280', fontSize: '13px', marginTop: '4px'}}>Donation & Fund Management</p>
         </div>
 
         {/* Login Card */}
