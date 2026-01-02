@@ -17,13 +17,32 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      if (email && password) {
-        localStorage.setItem('adminToken', 'demo-token');
-        router.push('/dashboard');
-      } else {
-        setError('Please fill in all fields');
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Login failed');
+        return;
       }
+
+      // Save user info to localStorage
+      localStorage.setItem('adminToken', JSON.stringify(data.user));
+      localStorage.setItem('userEmail', data.user.email);
+      
+      // Redirect to dashboard
+      router.push('/dashboard');
     } catch (err) {
+      console.error('Login error:', err);
       setError('Login failed. Please try again.');
     } finally {
       setLoading(false);
