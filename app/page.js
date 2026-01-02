@@ -7,6 +7,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -82,7 +83,7 @@ export default function LoginPage() {
             boxShadow: '0 10px 25px rgba(34, 197, 94, 0.2)',
             fontSize: '40px'
           }}>
-            ☪️
+            🕌
           </div>
           <h1 style={{fontSize: '32px', fontWeight: 'bold', color: '#065f46', marginBottom: '8px'}}>Masjid Ashraf ul Masajid</h1>
           <p style={{color: '#047857', fontSize: '16px', fontWeight: '500'}}>مسجد خيراتي نظام</p>
@@ -163,7 +164,7 @@ export default function LoginPage() {
             </div>
 
             {/* Password Input */}
-            <div style={{marginBottom: '20px'}}>
+            <div style={{marginBottom: '24px'}}>
               <label style={{
                 display: 'block',
                 color: '#065f46',
@@ -175,13 +176,14 @@ export default function LoginPage() {
               </label>
               <div style={{position: 'relative'}}>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   style={{
                     width: '100%',
                     padding: '12px 16px',
+                    paddingRight: '48px',
                     backgroundColor: '#f0fdf4',
                     border: '1px solid rgba(34, 197, 94, 0.3)',
                     borderRadius: '8px',
@@ -200,40 +202,36 @@ export default function LoginPage() {
                     e.target.style.backgroundColor = '#f0fdf4';
                   }}
                 />
-                <svg style={{position: 'absolute', right: '12px', top: '12px', width: '20px', height: '20px', color: '#6b7280'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: '#6b7280',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  {showPassword ? (
+                    <svg style={{width: '20px', height: '20px'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  ) : (
+                    <svg style={{width: '20px', height: '20px'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    </svg>
+                  )}
+                </button>
               </div>
-            </div>
-
-            {/* Remember Me & Forgot Password */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '12px',
-              marginBottom: '24px'
-            }}>
-              <label style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                color: '#374151',
-                cursor: 'pointer'
-              }}>
-                <input type="checkbox" style={{
-                  width: '16px',
-                  height: '16px',
-                  backgroundColor: '#f0fdf4',
-                  border: '1px solid rgba(34, 197, 94, 0.3)',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }} />
-                Remember me
-              </label>
-              <a href="#" style={{color: '#22c55e', textDecoration: 'none', transition: 'color 0.3s'}} onMouseEnter={(e) => e.target.style.color = '#16a34a'} onMouseLeave={(e) => e.target.style.color = '#22c55e'}>
-                Forgot password?
-              </a>
             </div>
 
             {/* Login Button */}
@@ -296,39 +294,7 @@ export default function LoginPage() {
               )}
             </button>
 
-            {/* Divider */}
-            <div style={{position: 'relative', margin: '24px 0'}}>
-              <div style={{borderTop: '1px solid rgba(34, 197, 94, 0.2)'}}></div>
-              <div style={{
-                position: 'absolute',
-                top: '-12px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: '#ffffff',
-                padding: '0 8px'
-              }}>
-                <span style={{fontSize: '12px', color: '#6b7280'}}>Demo Credentials</span>
-              </div>
-            </div>
 
-            {/* Demo Info */}
-            <div style={{
-              backgroundColor: 'rgba(34, 197, 94, 0.05)',
-              border: '1px solid rgba(34, 197, 94, 0.2)',
-              borderRadius: '8px',
-              padding: '16px',
-              fontSize: '12px',
-              color: '#374151'
-            }}>
-              <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px'}}>
-                <span style={{color: '#22c55e'}}>✉️</span>
-                <span>Email: <span style={{color: '#065f46', fontWeight: '500'}}>admin@masjid.com</span></span>
-              </div>
-              <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                <span style={{color: '#22c55e'}}>🔐</span>
-                <span>Password: <span style={{color: '#065f46', fontWeight: '500'}}>password123</span></span>
-              </div>
-            </div>
           </form>
         </div>
 
