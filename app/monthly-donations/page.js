@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
+import '../monthly-donations/donation.css'
 function MonthlyDonationsPage() {
+    
   const router = useRouter();
   const [donors, setDonors] = useState([]);
   const [monthlyRecords, setMonthlyRecords] = useState([]);
@@ -16,6 +17,11 @@ function MonthlyDonationsPage() {
 
   const currentMonth = new Date().getMonth() + 1;
   const currentYear = new Date().getFullYear();
+
+ const donation = monthlyRecords.find(r => {
+  const recordDonorId = r.donorId?._id || r.donorId;
+  return recordDonorId?.toString() === selectedDonor?._id?.toString();
+});
 
   // Scroll to top effect
   useEffect(() => {
@@ -84,17 +90,34 @@ function MonthlyDonationsPage() {
     }
   };
 
-  const getPaidDonors = () => {
-    return donors.filter(donor => {
-      const hasPaid = monthlyRecords.some(record => {
-        const recordDonorId = record.donorId ? record.donorId._id || record.donorId : null;
-        const donorId = donor._id;
-        return recordDonorId && recordDonorId.toString() === donorId.toString();
+  // Returns array of { donor, donation } for paid donors
+// Returns array of { donor, donation } where donation.donorId is replaced by donor
+const getPaidDonors = () => {
+  return donors
+    .map(donor => {
+      const donation = monthlyRecords.find(record => {
+        const recordDonorId = record.donorId?._id || record.donorId;
+        return recordDonorId?.toString() === donor._id?.toString();
       });
-      console.log(`Donor ${donor.name} (${donor._id}): hasPaid =`, hasPaid);
-      return hasPaid;
-    });
-  };
+
+      if (donation) {
+        // Replace donation.donorId with the donor object you already have
+        return {
+          donor,
+          donation: {
+            ...donation,
+            donorId: donor, // now it points to your original donor
+          },
+        };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+};
+
+
+
 
   const getUnpaidDonors = () => {
     return donors.filter(donor => {
@@ -227,14 +250,45 @@ function MonthlyDonationsPage() {
             </div>
             <div class="qr-section">
               <p style="color: #6b7280; font-size: 12px; margin: 0;">
-                📱 Scan or reference: MAM-${donor._id.slice(-6).toUpperCase()}-${donation._id.slice(-6).toUpperCase()}
+                📱  Reference for verification Purpose: MAM-${donor._id.slice(-6).toUpperCase()}-${donation._id.slice(-6).toUpperCase()}
               </p>
             </div>
-            <div class="verified">
-              <div class="verified-icon">✓</div>
-              <p class="verified-text">VERIFIED</p>
-              <p class="verified-sub">Receipt verified and recorded in system</p>
-            </div>
+  <div style="
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+">
+  <div style="
+    width: 160px;
+    height: 160px;
+    border: 5px solid #16a34a;
+    border-radius: 50%;
+    color: #16a34a;
+    font-size: 26px;
+    font-weight: 900;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-15deg);
+    opacity: 0.75;
+    text-transform: uppercase;
+    position: relative;
+    box-sizing: border-box;
+  ">
+    VERIFIED RECEIPT
+    <div style="
+      position: absolute;
+      bottom: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    ">
+      ${new Date().getFullYear()}
+    </div>
+  </div>
+</div>
+
             <div class="footer">
               <p>Thank you for your generous contribution!</p>
               <p>May Allah accept from all of us - Ameen</p>
@@ -279,6 +333,7 @@ function MonthlyDonationsPage() {
   });
 
   return (
+    
     <div style={styles.container}>
       <style>{`
         @keyframes spin {
@@ -334,25 +389,22 @@ function MonthlyDonationsPage() {
           <p style={styles.emptyText}>No donors have paid yet</p>
         ) : (
           <div style={styles.donorsList}>
-            {paidDonors.map(donor => {
-              const donation = monthlyRecords.find(r => r.donorId === donor._id);
-              return (
-                <div key={donor._id} style={styles.donorCard}>
-                  <div style={styles.donorInfo}>
-                    <h3 style={styles.donorName}>{donor.name}</h3>
-                    <p style={styles.donorAmount}>Rs {donation.amount.toFixed(2)}</p>
-                    <p style={styles.donorMeta}>{donation.paymentMethod}</p>
-                  </div>
-                  <button
-                    style={styles.receiptButton}
-                    onClick={() => generateReceipt(donor, donation)}
-                    disabled={loading}
-                  >
-                    📥 Download Receipt
-                  </button>
-                </div>
-              );
-            })}
+           {paidDonors.map(({ donor, donation }) => (
+  <div key={donor._id} style={styles.donorCard}>
+    <div style={styles.donorInfo}>
+      <h3 style={styles.donorName}>{donor.name}</h3>
+      <p>Rs {Number(donation.amount).toFixed(2)}</p>
+      <p>{donation.paymentMethod}</p>
+    </div>
+    <button
+      style={styles.receiptButton}
+      onClick={() => generateReceipt(donor, donation)}
+      disabled={!donation || loading}
+    >
+      📥 Download Receipt
+    </button>
+  </div>
+))}
           </div>
         )}
       </div>

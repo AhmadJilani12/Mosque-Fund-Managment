@@ -34,26 +34,10 @@ export async function POST(req) {
     const { donorId, amount, date, paymentMethod, notes, isMonthly, month, year } = await req.json();
 
     // Validation
-    if (!amount || amount <= 0) {
-      return NextResponse.json(
-        { error: 'Amount must be greater than 0' },
-        { status: 400 }
-      );
-    }
-
-    // Verify donor exists if provided
-    if (donorId && donorId !== 'anonymous') {
-      const donor = await Donor.findById(donorId);
-      if (!donor) {
-        return NextResponse.json(
-          { error: 'Donor not found' },
-          { status: 404 }
-        );
-      }
-    }
+   
 
     const donation = new Donation({
-      donorId: donorId === 'anonymous' || !donorId ? null : donorId,
+      donorId:donorId,
       amount,
       date: date ? new Date(date) : new Date(),
       paymentMethod: paymentMethod || 'cash',
@@ -66,7 +50,7 @@ export async function POST(req) {
     await donation.save();
     
     // Populate donor info before returning
-    await donation.populate('donorId', 'name phone address');
+   await donation.populate('donorId', 'name phone address');
 
     return NextResponse.json(
       {

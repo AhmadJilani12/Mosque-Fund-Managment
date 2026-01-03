@@ -43,13 +43,11 @@ const donationSchema = new mongoose.Schema({
 });
 
 // Auto-populate month and year if not provided
-donationSchema.pre('save', function(next) {
+donationSchema.pre('save', function () {
   if (!this.month || !this.year) {
     const date = new Date(this.date);
     this.month = date.getMonth() + 1;
     this.year = date.getFullYear();
   }
-  next();
 });
-
 module.exports = mongoose.models.Donation || mongoose.model('Donation', donationSchema);
