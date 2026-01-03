@@ -3,30 +3,36 @@ import connectDB from '@/lib/mongodb';
 import Donation from '@/models/Donation';
 import Donor from '@/models/Donor';
 
+
 export async function GET(req) {
   try {
     await connectDB();
 
-    const donations = await Donation.find()
-      .populate('donorId', 'name phone address')
+    const { searchParams } = new URL(req.url);
+    const month = searchParams.get('month');
+    const year = searchParams.get('year');
+
+    let query = {};
+    if (month && year) {
+      query = { month: Number(month), year: Number(year) };
+    }
+
+    const donations = await Donation.find(query)
+      .populate('donorId', 'name phone address defaultAmount')
       .sort({ date: -1 });
 
     return NextResponse.json(
-      {
-        success: true,
-        donations,
-      },
+      { success: true, donations },
       { status: 200 }
     );
   } catch (error) {
     console.error('Get donations error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch donations' },
+      { success: false, error: 'Failed to fetch donations' },
       { status: 500 }
     );
   }
 }
-
 export async function POST(req) {
   try {
     await connectDB();
@@ -104,3 +110,6 @@ export async function DELETE(req) {
     );
   }
 }
+
+
+
