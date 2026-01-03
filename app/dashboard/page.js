@@ -73,11 +73,12 @@ export default function Dashboard() {
   );
 
   const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'donations', label: 'Donations', icon: '🤲' },
-    { id: 'expenses', label: 'Expenses', icon: '💰' },
-    { id: 'budget', label: 'Budget', icon: '📋' },
-    { id: 'reports', label: 'Reports', icon: '📈' },
+    { id: 'dashboard', label: 'Dashboard', icon: '📊', path: null },
+    { id: 'donors', label: 'Donors', icon: '👥', path: '/donors' },
+    { id: 'donations', label: 'Donations', icon: '💰', path: '/donations' },
+    { id: 'monthly', label: 'Monthly Donations', icon: '📅', path: '/monthly-donations' },
+    { id: 'expenses', label: 'Expenses', icon: '📊', path: '/expenses' },
+    { id: 'balance', label: 'Balance', icon: '⚖️', path: '/balance' },
   ];
 
   return (
@@ -170,13 +171,19 @@ export default function Dashboard() {
             scrollBehavior: 'smooth'
           }}>
             {tabs.map((tab, index) => {
-              // Hide 4th and 5th items on mobile (only show first 3)
-              const isHiddenOnMobile = index >= 3;
+              // Hide 5th and 6th items on mobile (only show first 4)
+              const isHiddenOnMobile = index >= 4;
               
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    if (tab.path) {
+                      router.push(tab.path);
+                    } else {
+                      setActiveTab(tab.id);
+                    }
+                  }}
                   style={{
                     flex: '0 0 auto',
                     minWidth: 'clamp(80px, 20vw, 150px)',
@@ -274,13 +281,14 @@ export default function Dashboard() {
                 gap: '10px'
               }}>
                 {[
-                  { label: '🤲 Donation', bg: '#22c55e', hover: '#16a34a' },
-                  { label: '💰 Expense', bg: '#ef4444', hover: '#dc2626' },
-                  { label: '📋 Budget', bg: '#d97706', hover: '#b45309' },
-                  { label: '📊 Report', bg: '#16a34a', hover: '#15803d' }
+                  { label: '🤲 Donation', bg: '#22c55e', hover: '#16a34a', action: () => router.push('/donations') },
+                  { label: '💰 Expense', bg: '#ef4444', hover: '#dc2626', action: () => {} },
+                  { label: '📋 Budget', bg: '#d97706', hover: '#b45309', action: () => {} },
+                  { label: '📊 Report', bg: '#16a34a', hover: '#15803d', action: () => {} }
                 ].map((action, idx) => (
                   <button
                     key={idx}
+                    onClick={action.action}
                     style={{
                       backgroundColor: action.bg,
                       color: 'white',
