@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import '../monthly-donations/donation.css'
 function MonthlyDonationsPage() {
-    
+
   const router = useRouter();
   const [donors, setDonors] = useState([]);
   const [monthlyRecords, setMonthlyRecords] = useState([]);
@@ -14,6 +14,7 @@ function MonthlyDonationsPage() {
   const [paymentAmount, setPaymentAmount] = useState('');
   const [useDefaultAmount, setUseDefaultAmount] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const currentMonth = new Date().getMonth() + 1;
   const currentYear = new Date().getFullYear();
@@ -36,6 +37,13 @@ function MonthlyDonationsPage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+  if (donors.length > 0 && monthlyRecords.length >= 0) {
+    setDataLoaded(true);
+  }
+}, [donors, monthlyRecords]);
+
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -90,7 +98,7 @@ function MonthlyDonationsPage() {
     }
   };
 
-  // Returns array of { donor, donation } for paid donors
+// Returns array of { donor, donation } for paid donors
 // Returns array of { donor, donation } where donation.donorId is replaced by donor
 const getPaidDonors = () => {
   return donors
@@ -115,7 +123,6 @@ const getPaidDonors = () => {
     })
     .filter(Boolean);
 };
-
 
 
 
@@ -331,6 +338,14 @@ const getPaidDonors = () => {
     donors: donors,
     monthlyRecords: monthlyRecords,
   });
+//setted loader for loading data
+    if (!dataLoaded) {
+    return (
+      <div style={{padding: 20}}>
+        <h3>Loading Monthly Donations…</h3>
+      </div>
+    );
+  }
 
   return (
     
@@ -359,6 +374,7 @@ const getPaidDonors = () => {
           {message}
         </div>
       )}
+
 
       {donors.length === 0 && (
         <div style={{...styles.message, backgroundColor: '#fef3c7', color: '#92400e', borderColor: '#fcd34d'}}>
