@@ -192,10 +192,8 @@ export default function Dashboard() {
                     fontSize: 'clamp(11px, 2vw, 14px)',
                     border: 'none',
                     backgroundColor: 'transparent',
-                    color: activeTab === tab.id ? '#22c55e' : '#6b7280',
-                    cursor: 'pointer',
-                    borderBottom: activeTab === tab.id ? '3px solid #22c55e' : '3px solid transparent',
-                    transition: 'all 0.3s',
+                          cursor: 'pointer',
+                           transition: 'all 0.3s',
                     textAlign: 'center',
                     display: isHiddenOnMobile ? 'none' : 'block'
                   }}

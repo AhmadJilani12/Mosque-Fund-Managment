@@ -126,16 +126,19 @@ const getPaidDonors = () => {
 
 
 
-  const getUnpaidDonors = () => {
-    return donors.filter(donor => {
-      const hasPaid = monthlyRecords.some(record => {
-        const recordDonorId = record.donorId ? record.donorId._id || record.donorId : null;
-        const donorId = donor._id;
-        return recordDonorId && recordDonorId.toString() === donorId.toString();
-      });
-      return !hasPaid;
+ const getUnpaidDonors = () => {
+
+  if (monthlyRecords.length === 0) return [];
+
+  return donors.filter(donor => {
+    const hasPaid = monthlyRecords.some(record => {
+      const recordDonorId = record.donorId?._id || record.donorId;
+      return recordDonorId?.toString() === donor._id?.toString();
     });
-  };
+    return !hasPaid;
+  });
+};
+
 
   const handleMarkAsPaid = async (donor) => {
     const amount = useDefaultAmount ? donor.defaultAmount : parseFloat(paymentAmount);
