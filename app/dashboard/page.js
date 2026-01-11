@@ -314,39 +314,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Summary Info */}
-            <div style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid rgba(34, 197, 94, 0.15)',
-              borderRadius: '12px',
-              padding: 'clamp(16px, 3vw, 24px)'
-            }}>
-              <h2 style={{fontSize: 'clamp(14px, 3vw, 18px)', fontWeight: 'bold', color: '#065f46', marginBottom: '16px'}}>Financial Summary</h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(120px, 100%, 150px), 1fr))',
-                gap: '16px'
-              }}>
-                <div style={{textAlign: 'center'}}>
-                  <p style={{color: '#6b7280', fontSize: 'clamp(10px, 2vw, 11px)', fontWeight: '600', marginBottom: '8px'}}>DONATIONS</p>
-                  <p style={{fontSize: 'clamp(16px, 3vw, 22px)', fontWeight: 'bold', color: '#22c55e'}}>
-                    ${dashboardData.totalDonations.toLocaleString()}
-                  </p>
-                </div>
-                <div style={{textAlign: 'center'}}>
-                  <p style={{color: '#6b7280', fontSize: 'clamp(10px, 2vw, 11px)', fontWeight: '600', marginBottom: '8px'}}>EXPENSES</p>
-                  <p style={{fontSize: 'clamp(16px, 3vw, 22px)', fontWeight: 'bold', color: '#ef4444'}}>
-                    ${dashboardData.totalExpenses.toLocaleString()}
-                  </p>
-                </div>
-                <div style={{textAlign: 'center'}}>
-                  <p style={{color: '#6b7280', fontSize: 'clamp(10px, 2vw, 11px)', fontWeight: '600', marginBottom: '8px'}}>BALANCE</p>
-                  <p style={{fontSize: 'clamp(16px, 3vw, 22px)', fontWeight: 'bold', color: '#22c55e'}}>
-                    ${dashboardData.currentBalance.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            </div>
+         
           </div>
         )}
 
