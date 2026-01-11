@@ -279,7 +279,7 @@ export default function Dashboard() {
                 gap: '10px'
               }}>
                 {[
-                  { label: '🤲 Donation', bg: '#22c55e', hover: '#16a34a', action: () => router.push('/donations') },
+                  { label: '🤲 Past Monthly Donation', bg: '#22c55e', hover: '#16a34a', action: () => router.push('/past-monthly-donations') },
                   { label: '💰 Expense', bg: '#ef4444', hover: '#dc2626', action: () => {} },
                   { label: '📋 Budget', bg: '#d97706', hover: '#b45309', action: () => {} },
                   { label: '📊 Report', bg: '#16a34a', hover: '#15803d', action: () => {} }
